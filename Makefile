@@ -6,17 +6,17 @@
 #    By: aouloube <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/25 10:21:15 by aouloube          #+#    #+#              #
-#    Updated: 2016/01/05 15:12:12 by aouloube         ###   ########.fr        #
+#    Updated: 2016/01/06 14:57:36 by aouloube         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: all, clean, fclean, re
 NAME = fdf
-CC = gcc
-AR = ar rc
+CC = gcc -o
 SRCS = fdf.c
-CFLAGS = -c -Wall -Werror -Wextra -I includes
-OBJS = fdf
+CFLAGS = -Wall -Werror -Wextra
+MLX = -lmlx -framework OpenGL -framework AppKit -L minilibx
+OBJS = fdf.o
 LIBFT =   make -C libft/ fclean  -s  && make -C libft/ -s
 
 RM = rm -rf
@@ -28,16 +28,14 @@ $(NAME):
 	@echo "\033[33;35m |*******************************| \033[33;0m"
 	@echo "\033[33;35m |*              FDF            *| \033[33;0m"
 	@echo "\033[33;35m |*******************************| \033[33;0m"
-	@$(CC) $(CFLAGS) $(SRCS)
+	@$(CC) $(NAME) $(CFLAGS) $(SRCS)  $(MLX)
 	@echo "\033[33;35m |*            GCC       OK [✓] *| \033[33;0m"
-	@$(AR) $(NAME) $(OBJS)
-	@echo "\033[33;35m |*            AR RC     OK [✓] *| \033[33;0m"
 	@echo "\033[33;35m |*                             *| \033[33;0m"
 	@echo "\033[33;35m |* =======  COMPLETED 😎  ===== *| \033[33;0m"
 	@echo "\033[33;35m |*                             *| \033[33;0m"
 	@echo "\033[33;35m |*******************************| \033[33;0m \n"
 clean:
-	@$(RM) $(OBJS)
+	@$(RM) $(NAME)
 
 fclean: clean
 	@echo "\033[33;35m |*******************************| \033[33;0m"

@@ -6,13 +6,28 @@
 /*   By: aouloube <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 11:48:15 by aouloube          #+#    #+#             */
-/*   Updated: 2016/01/05 11:54:20 by aouloube         ###   ########.fr       */
+/*   Updated: 2016/01/06 14:59:49 by aouloube         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/includes/libft.h"
+#include "minilibx/mlx.h"
+#include <math.h>
 
-int		main(void)
+typedef struct    data_s
 {
-	return (0);
+	void          *mlx_ptr;
+	void          *mlx_win;
+}                 data_t;
+
+int main(void)
+{
+	data_t        data;
+
+	if ((data.mlx_ptr = mlx_init()) == NULL)
+		return (EXIT_FAILURE);
+	if ((data.mlx_win = mlx_new_window(data.mlx_ptr, 640, 480, "FDF")) == NULL)
+		return (EXIT_FAILURE);
+	mlx_loop(data.mlx_ptr);
+	return (EXIT_SUCCESS);
 }
