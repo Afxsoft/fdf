@@ -6,7 +6,7 @@
 #    By: aouloube <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/25 10:21:15 by aouloube          #+#    #+#              #
-#    Updated: 2016/01/06 14:57:36 by aouloube         ###   ########.fr        #
+#    Updated: 2016/01/11 17:38:37 by aouloube         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME = fdf
 CC = gcc -o
 SRCS = fdf.c
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -I libft/includes -L libft/ -lft
 MLX = -lmlx -framework OpenGL -framework AppKit -L minilibx
 OBJS = fdf.o
 LIBFT =   make -C libft/ fclean  -s  && make -C libft/ -s
