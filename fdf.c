@@ -6,7 +6,7 @@
 /*   By: aouloube <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 14:56:56 by aouloube          #+#    #+#             */
-/*   Updated: 2016/02/02 15:38:08 by aouloube         ###   ########.fr       */
+/*   Updated: 2016/02/03 17:36:48 by aouloube         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct	s_mlx
 {
 	void		*mlx;
 	void		*win;
+	char		**current_l;
+	char		**next_l;
 }				t_mlx;
 
 int		mlx_key_press(int keyword, void *param)
@@ -57,9 +59,13 @@ void	ft_fdf(t_mlx *mlx ,char **argv)
 	offset = 30;
 	fd = open(argv[1], O_RDONLY);
 	y = 0;
+
 	while (get_next_line(fd, &line))
 	{
-	 	l2 = ft_strsplit(line, ' ');
+		l2 = ft_strsplit(line, ' ');
+		mlx->current_l = (!mlx->current_l) ? ft_strsplit(line, ' ') : mlx->next_l;
+ 		line = NULL;
+		//get_next_line(fd, &line);
 		x = offset / 2;
 		i = 0;
 
@@ -76,15 +82,14 @@ void	ft_fdf(t_mlx *mlx ,char **argv)
 						mlx_draw_line(mlx, x , y , 0X00BA3733, offset, ft_atoi(l2[i]), d);
 						d++;
 					}
-
 				}
-						}
+			}
 			else
 			{
 				mlx_draw_point(mlx, x, y , 0X00FFFFFF, offset, ft_atoi(l2[i]));
-				if(l2[i + 1])
+				
+				if(ft_strstr(l2[i + 1], "\0"))
 				{
-					printf("[%s] ", l2[i + 1]);
 					d = 1;
 					while (d < offset)
 					{
@@ -97,10 +102,13 @@ void	ft_fdf(t_mlx *mlx ,char **argv)
 			i++;
 		}
 
-		y++;
-		printf("[%s]\n", line);
-	}
+		printf("%s\n", line);
 
+		y++;
+	}
+		printf("HALLOOLOOO\n");
+		
+	mlx->current_l = NULL;
 }
 
 t_mlx	*ft_mlx_init()
@@ -120,6 +128,7 @@ int		main (int argc, char **argv)
 	
 	mlx = ft_mlx_init();
 	ft_fdf(mlx, argv);
+	printf("Fuck tha police");
 	argc = 0;
 	printf("Fuck tha police");
 	mlx_key_hook(mlx->win, mlx_key_press, mlx);
