@@ -6,7 +6,7 @@
 /*   By: aouloube <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 14:56:56 by aouloube          #+#    #+#             */
-/*   Updated: 2016/02/03 17:36:48 by aouloube         ###   ########.fr       */
+/*   Updated: 2016/02/04 17:59:43 by aouloube         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ typedef struct	s_mlx
 	void		*win;
 	char		**current_l;
 	char		**next_l;
+	int			offset;
+	int			x;
+	int			y;
 }				t_mlx;
 
 int		mlx_key_press(int keyword, void *param)
@@ -53,47 +56,48 @@ void	ft_fdf(t_mlx *mlx ,char **argv)
 	int		x;
 	int		y;
 	int		i;
-	int		offset;
 	int		d;
 
-	offset = 30;
 	fd = open(argv[1], O_RDONLY);
 	y = 0;
 
 	while (get_next_line(fd, &line))
 	{
-		l2 = ft_strsplit(line, ' ');
-		mlx->current_l = (!mlx->current_l) ? ft_strsplit(line, ' ') : mlx->next_l;
- 		line = NULL;
-		//get_next_line(fd, &line);
-		x = offset / 2;
+		//mlx->current_l = (!mlx->current_l) ? ft_strsplit(line, ' ') : mlx->next_l;
+		mlx->current_l = ft_strsplit(line, ' ');
+		l2 = mlx->current_l;
+		//if(get_next_line(fd, &line))
+		//{
+			//mlx->next_l = ft_strsplit(line, ' ');
+		//}
+		x = mlx->offset / 2;
 		i = 0;
 
 		while(l2[i])
 		{
 			if (ft_atoi(l2[i]) != 0)
 			{
-				mlx_draw_point(mlx, x, y , 0X00BA3733, offset, ft_atoi(l2[i]));
+				mlx_draw_point(mlx, x, y , 0X00BA3733, mlx->offset, ft_atoi(l2[i]));
 				if (ft_atoi(l2[i + 1]) == 10)
 				{
 					d = 1;
-					while (d < offset)
+					while (d < mlx->offset)
 					{
-						mlx_draw_line(mlx, x , y , 0X00BA3733, offset, ft_atoi(l2[i]), d);
+						mlx_draw_line(mlx, x , y , 0X00BA3733, mlx->offset, ft_atoi(l2[i]), d);
 						d++;
 					}
 				}
 			}
 			else
 			{
-				mlx_draw_point(mlx, x, y , 0X00FFFFFF, offset, ft_atoi(l2[i]));
+				mlx_draw_point(mlx, x, y , 0X00FFFFFF, mlx->offset, ft_atoi(l2[i]));
 				
 				if(ft_strstr(l2[i + 1], "\0"))
 				{
 					d = 1;
-					while (d < offset)
+					while (d < mlx->offset)
 					{
-						mlx_draw_line(mlx, x , y , 0X00FFFFFF, offset, ft_atoi(l2[i]), d);
+						mlx_draw_line(mlx, x , y , 0X00FFFFFF, mlx->offset, ft_atoi(l2[i]), d);
 						d++;
 					}
 				}
@@ -101,14 +105,10 @@ void	ft_fdf(t_mlx *mlx ,char **argv)
 			x++;
 			i++;
 		}
-
-		printf("%s\n", line);
-
 		y++;
 	}
-		printf("HALLOOLOOO\n");
-		
 	mlx->current_l = NULL;
+	//mlx->next_l = NULL;
 }
 
 t_mlx	*ft_mlx_init()
@@ -118,6 +118,7 @@ t_mlx	*ft_mlx_init()
 	mlx = (t_mlx *)malloc(sizeof(t_mlx *));
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, 1000, 1000, "FDF by Afxsoft");
+	mlx->offset = 30;
 	return (mlx);
 }
 
